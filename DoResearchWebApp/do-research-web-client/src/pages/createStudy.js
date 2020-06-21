@@ -1,15 +1,8 @@
 import React from "react";
+import FormPage from "../components/form/Form";
 
-function createStudyPage() {
-  return (
-    <form>
-      <label>
-        Name:
-        <input type="text" />
-      </label>
-      <input type="submit" value="Submit" />
-    </form>
-  );
+function CreateStudyPage() {
+  return <FormPage />;
 }
 
-export default createStudyPage;
+export default CreateStudyPage;
