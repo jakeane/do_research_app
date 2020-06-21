@@ -5,8 +5,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
 import MenuBookRoundedIcon from "@material-ui/icons/MenuBookRounded";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -32,10 +30,38 @@ export default function StudyDetailsPage() {
   // const [participantScreening, setParticipantScreening] = useState("");
   // const [participantGroup, setParticipantGroup] = useState("");
   // const [participantNumber, setParticipantNumber] = useState("");
-  // const [dataCollected, setDataCollected] = useState("");
+
   // const [studySurvey, setStudySurvey] = useState({});
   // const [shipProduct, setShipProduct] = useState("");
   // const [studyPayment, setStudyPayment] = useState("");
+
+  const [dataCollected, setDataCollected] = useState({
+    survey: false,
+    interview: false,
+    mobileSensing: false,
+    meeting: false,
+  });
+  const handleDataCollected = (event) => {
+    setDataCollected({
+      ...dataCollected,
+      [event.target.name]: event.target.checked,
+    });
+  };
+  const renderImportSurvey = () => {
+    if (survey) {
+      return (
+        <FormControl>
+          <FormGroup className={classes.importSurvey}>
+            <TextField variant="outlined" margin="normal" />
+            <Button variant="contained" color="primary" size="medium">
+              Import Survey
+            </Button>
+          </FormGroup>
+        </FormControl>
+      );
+    }
+  };
+  const { survey, interview, mobileSensing, meeting } = dataCollected;
 
   return (
     <Container component="main" maxWidth="xs">
@@ -136,19 +162,44 @@ export default function StudyDetailsPage() {
             <FormLabel>Data Collected</FormLabel>
             <FormGroup>
               <FormControlLabel
-                control={<Checkbox name="survey" />}
+                control={
+                  <Checkbox
+                    name="survey"
+                    checked={survey}
+                    onChange={handleDataCollected}
+                  />
+                }
                 label="Survey"
               />
+              {renderImportSurvey()}
               <FormControlLabel
-                control={<Checkbox name="interview" />}
+                control={
+                  <Checkbox
+                    name="interview"
+                    checked={interview}
+                    onChange={handleDataCollected}
+                  />
+                }
                 label="Interview"
               />
               <FormControlLabel
-                control={<Checkbox name="mobileSensing" />}
+                control={
+                  <Checkbox
+                    name="mobileSensing"
+                    checked={mobileSensing}
+                    onChange={handleDataCollected}
+                  />
+                }
                 label="Mobile Sensing"
               />
               <FormControlLabel
-                control={<Checkbox name="meeting" />}
+                control={
+                  <Checkbox
+                    name="meeting"
+                    checked={meeting}
+                    onChange={handleDataCollected}
+                  />
+                }
                 label="Physical Meeting"
               />
             </FormGroup>
@@ -202,6 +253,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(3, 0, 5),
+  },
+  importSurvey: {
+    margin: theme.spacing(-2, 5, 2),
   },
 }));

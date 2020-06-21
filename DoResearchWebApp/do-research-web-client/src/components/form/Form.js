@@ -11,6 +11,8 @@ function FormPage() {
       return <h1>Confirm Study</h1>;
     case 3:
       return <h1>Study Success</h1>;
+    default:
+      break;
   }
   return <div></div>;
 }
