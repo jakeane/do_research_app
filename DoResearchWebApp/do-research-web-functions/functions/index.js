@@ -7,8 +7,11 @@ const fbAuth = require("./util/fbAuth");
 
 const { getStudies } = require("./handlers/studies");
 const { signUp, logIn } = require("./handlers/users");
-//const { getAuthUrl, next } = require("./handlers/google");
-const { openGFAuth, getAuthCode } = require("./handlers/google");
+const {
+  checkGoogleOAuth,
+  handleGoogleOAuthCode,
+} = require("./util/googleAuth");
+const { convertGF } = require("./handlers/googleForm");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -19,8 +22,8 @@ app.post("/signup", signUp);
 
 app.post("/login", logIn);
 
-app.post("/openGFAuth", openGFAuth);
-app.get("/oauthcallback", getAuthCode);
+app.get("/openGFAuth", checkGoogleOAuth, convertGF);
+app.get("/oauthcallback", handleGoogleOAuthCode);
 
 const port = 3000;
 app.listen(port, () => console.log(`Functions listening to port ${port}`));

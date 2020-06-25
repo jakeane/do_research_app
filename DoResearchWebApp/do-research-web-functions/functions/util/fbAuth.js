@@ -25,7 +25,7 @@ module.exports = (request, response, next) => {
         .get();
     })
     .then((data) => {
-      req.user.email = data.docs[0].data().email;
+      request.user.email = data.docs[0].data().email;
       return next();
     })
     .catch((err) => {
