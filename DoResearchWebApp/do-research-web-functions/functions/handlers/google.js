@@ -1,5 +1,4 @@
 const fs = require("fs");
-const readline = require("readline");
 const { google } = require("googleapis");
 
 // If modifying these scopes, delete token.json.
@@ -37,6 +36,7 @@ exports.getAuthCode = (req, res) => {
 };
 
 exports.openGFAuth = (req, res) => {
+  const formUrl = req.body.formUrl;
   fs.readFile("credentials.json", (err, content) => {
     if (err) return console.log("Error loading client secret file:", err);
     // Authorize a client with credentials, then call the Google Apps Script API.
@@ -58,7 +58,7 @@ exports.openGFAuth = (req, res) => {
         return;
       }
       oAuth2Client.setCredentials(JSON.parse(token));
-      const form = await convertGF(oAuth2Client);
+      const form = await convertGF(oAuth2Client, formUrl);
       res.send(form);
     });
     // console.log("okie", jsonOrUrl, "dokie");
@@ -66,28 +66,6 @@ exports.openGFAuth = (req, res) => {
   });
 };
 // Load client secrets from a local file.
-
-/**
- * Create an OAuth2 client with the given credentials, and then execute the
- * given callback function.
- * @param {Object} credentials The authorization client credentials.
- * @param {function} callback The callback to call with the authorized client.
- */
-function authorize(credentials, callback) {
-  const { client_secret, client_id, redirect_uris } = credentials.web;
-  const oAuth2Client = new google.auth.OAuth2(
-    client_id,
-    client_secret,
-    redirect_uris[0]
-  );
-
-  // Check if we have previously stored a token.
-  fs.readFile(TOKEN_PATH, (err, token) => {
-    if (err) return getAccessToken(oAuth2Client, callback);
-    oAuth2Client.setCredentials(JSON.parse(token));
-    return callback(oAuth2Client);
-  });
-}
 
 /**
  * Get and store new token after prompting for user authorization, and then
@@ -104,7 +82,7 @@ function getAccessToken(oAuth2Client) {
   return authUrl;
 }
 
-async function convertGF(auth, callback) {
+async function convertGF(auth, formUrl) {
   // Make the API request. The request object is included here as 'resource'.
   const script = google.script({ version: "v1", auth });
   const scriptId = "1Jw1cq_dQVdHKCRgpjyz3gzBT63J1OFQN5_FaO-u-8R_eJqtSHtzz_6W-";
@@ -112,6 +90,7 @@ async function convertGF(auth, callback) {
     auth: auth,
     resource: {
       function: "main",
+      parameters: [formUrl],
       devMode: true,
     },
     scriptId: scriptId,
@@ -136,7 +115,6 @@ async function convertGF(auth, callback) {
     }
   } else {
     const json = resp.data.response.result;
-    console.log("RESULT:", JSON.stringify(json));
     return json;
   }
 }
