@@ -47,6 +47,18 @@ export default function StudyDetailsPage() {
       [event.target.name]: event.target.checked,
     });
   };
+
+  const getForm = () => {
+    console.log("Starting getForm");
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    const url =
+      "https://script.google.com/macros/s/AKfycbxDNQqvDLoNHoJUPmVG1IReL68ZZRv5Ofb5UVLUAnSIxysP5FM/exec?url=https://docs.google.com/forms/d/15b2it48-4HBMRvuSB4CCtPtBVVU_bGk8XFlNTH47loc/edit";
+
+    window.open(proxyurl + url);
+    fetch(proxyurl + url)
+      .then((response) => alert(JSON.stringify(response)))
+      .catch((err) => console.log("Error:", err));
+  };
   const renderImportSurvey = () => {
     if (survey) {
       return (
@@ -74,6 +86,7 @@ export default function StudyDetailsPage() {
           Create Study
         </Typography>
         <form className={classes.form} noValidate>
+          <Button onClick={() => getForm()}>Click Me</Button>
           <TextField
             variant="outlined"
             margin="normal"

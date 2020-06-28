@@ -6,7 +6,6 @@ import "./App.css";
 import ResearcherHomeScreen from "./pages/researcherHome";
 import LoginScreen from "./pages/login";
 import SignUpScreen from "./pages/signUp";
-import CreateSurveyScreen from "./pages/createSurvey";
 import createStudyPage from "./pages/createStudy";
 import PrivacyPolicyPage from "./pages/privacyPolicy";
 import TermsAndConditionsPage from "./pages/termsAndConditions";
@@ -19,7 +18,6 @@ function App() {
           <Route exact path="/" component={ResearcherHomeScreen} />
           <Route exact path="/login" component={LoginScreen} />
           <Route exact path="/signup" component={SignUpScreen} />
-          <Route exact path="/create-survey" component={CreateSurveyScreen} />
           <Route exact path="/create-study" component={createStudyPage} />
           <Route exact path="/privacy-policy" component={PrivacyPolicyPage} />
           <Route
